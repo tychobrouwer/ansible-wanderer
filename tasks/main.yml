@@ -46,11 +46,17 @@
   ansible.builtin.include_tasks: meilisearch.yml
 
 - name: Build PocketBase
-  ansible.builtin.shell: cd {{ wanderer_install_dir }}/db && go mod tidy && go build
+  ansible.builtin.shell: go mod tidy && go build
+  args:
+    chdir: "{{ wanderer_install_dir }}/db"
+    creates: "{{ wanderer_install_dir }}/db/pocketbase"
   when: git_clone.changed
 
 - name: Install Web interface
-  ansible.builtin.shell: cd {{ wanderer_install_dir }}/web && npm ci --omit=dev && npm run build && npm i -s vitest
+  ansible.builtin.shell: npm ci --omit=dev && npm run build && npm i -s vitest
+  args:
+    chdir: "{{ wanderer_install_dir }}/web"
+    creates: "{{ wanderer_install_dir }}/web/dist"
   when: git_clone.changed
 
 - name: Create wanderer startup script

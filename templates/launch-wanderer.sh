@@ -17,7 +17,7 @@ export PUBLIC_PRIVATE_INSTANCE={{ wanderer_private_instance }}
 # export UPLOAD_USER=
 # export UPLOAD_PASSWORD=
 
-cd {{ wanderer_install_dir }}/search && ./meilisearch --master-key $MEILI_MASTER_KEY &
+cd {{ wanderer_install_dir }}/search && meilisearch --master-key $MEILI_MASTER_KEY &
 cd {{ wanderer_install_dir }}/db && ./pocketbase serve &
 cd {{ wanderer_install_dir }}/web && node build &
 
