@@ -1,8 +1,5 @@
 ---
 # vars file for wanderer
-wanderer_user: wanderer
-wanderer_group: wanderer
-
 wanderer_latest_url: https://api.github.com/repos/Flomp/wanderer/releases/latest
 wanderer_git_source: https://github.com/Flomp/wanderer.git
 wanderer_install_dir: /opt/wanderer

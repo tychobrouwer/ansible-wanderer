@@ -1,18 +1,5 @@
 ---
 # tasks file for wanderer
-- name: Create Wanderer group
-  ansible.builtin.group:
-    name: "{{ wanderer_group }}"
-    state: present
-
-- name: Create Wanderer user
-  ansible.builtin.user:
-    name: "{{ wanderer_user }}"
-    group: "{{ wanderer_group }}"
-    shell: /sbin/nologin
-    create_home: false
-    state: present
-
 - name: Install git, golang, Node.js, and npm
   ansible.builtin.package:
     name:

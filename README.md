@@ -19,8 +19,6 @@ Example Playbook
     - role: tychobrouwer.wanderer
 
     - role: ansible-wanderer
-      wanderer_user: wanderer
-      wanderer_group: wanderer
       wanderer_install_dir: /opt/wanderer
       wanderer_disable_signup: true
       wanderer_private_instance: true
