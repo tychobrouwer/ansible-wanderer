@@ -2,7 +2,7 @@
 trap "kill 0" EXIT
 
 # Required configuration
-export ORIGIN=http://localhost:3000
+export ORIGIN={{ wanderer_origin }}
 export MEILI_URL=http://127.0.0.1:7700
 export MEILI_MASTER_KEY={{ wanderer_meili_master_key }}
 export PUBLIC_POCKETBASE_URL=http://127.0.0.1:8090

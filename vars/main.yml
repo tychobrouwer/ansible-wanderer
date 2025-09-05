@@ -6,3 +6,4 @@ wanderer_install_dir: /opt/wanderer
 
 wanderer_disable_signup: true
 wanderer_private_instance: true
+wanderer_origin: http://localhost:3000
