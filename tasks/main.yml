@@ -64,7 +64,7 @@
   ansible.builtin.template:
     src: launch-wanderer.sh
     dest: "/usr/local/bin/launch-wanderer.sh"
-    mode: '0755'
+    mode: "0755"
   notify: Restart Wanderer
 
 - name: Ensure Wanderer service file is on remote

@@ -8,7 +8,9 @@ ExecStart=/usr/local/bin/launch-wanderer.sh
 Restart=always
 User={{ wanderer_user }}
 Group={{ wanderer_group }}
-Environment=NODE_ENV=production
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
