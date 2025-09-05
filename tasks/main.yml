@@ -57,7 +57,7 @@
   ansible.builtin.shell: npm ci --omit=dev && npm run build && npm i -s vitest
   args:
     chdir: "{{ wanderer_install_dir }}/web"
-    creates: "{{ wanderer_install_dir }}/web/dist"
+    creates: "{{ wanderer_install_dir }}/web/build"
   when: git_clone.changed
 
 - name: Create wanderer startup script
