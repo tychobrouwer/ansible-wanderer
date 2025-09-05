@@ -1,0 +1,75 @@
+---
+# tasks file for wanderer
+- name: Create Wanderer group
+  ansible.builtin.group:
+    name: "{{ wanderer_group }}"
+    state: present
+
+- name: Create Wanderer user
+  ansible.builtin.user:
+    name: "{{ wanderer_user }}"
+    group: "{{ wanderer_group }}"
+    shell: /sbin/nologin
+    create_home: false
+    state: present
+
+- name: Get latest version of wanderer
+  ansible.builtin.uri:
+    url: "{{ wanderer_latest_url }}"
+    return_content: true
+  register: wanderer_latest
+
+- name: Parse the JSON response to get the download URL
+  ansible.builtin.set_fact:
+    tag_name: "{{ wanderer_latest.json.tag_name }}"
+
+- name: Clone wanderer repository
+  ansible.builtin.git:
+    repo: "{{ wanderer_git_source }}"
+    dest: "{{ wanderer_install_dir }}"
+    single_branch: true
+    depth: 1
+    version: "{{ tag_name }}"
+  register: git_clone
+  notify: Restart Wanderer
+
+- name: Install golang, Node.js, and npm
+  ansible.builtin.package:
+    name:
+      - golang
+      - nodejs
+      - npm
+    state: present
+
+- name: Install Meilisearch
+  ansible.builtin.include_tasks: meilisearch.yml
+
+- name: Build PocketBase
+  ansible.builtin.command: cd {{ wanderer_install_dir }}/db && go mod tidy && go build
+  when: git_clone.changed
+
+- name: Install Web interface
+  ansible.builtin.command: cd {{ wanderer_install_dir }}/web && npm ci --omit=dev && npm run build && npm i -s vitest
+  when: git_clone.changed
+
+- name: Create wanderer startup script
+  ansible.builtin.template:
+    src: launch-wanderer.sh
+    dest: "/usr/local/bin/launch-wanderer.sh"
+    mode: '0755'
+  notify: Restart Wanderer
+
+- name: Ensure Wanderer service file is on remote
+  ansible.builtin.template:
+    src: wanderer.service.j2
+    dest: /etc/systemd/system/wanderer.service
+    mode: "0664"
+    owner: root
+    group: root
+  notify: Restart Wanderer
+
+- name: Ensure Wanderer service is started and enabled
+  ansible.builtin.systemd:
+    name: wanderer
+    state: started
+    enabled: true

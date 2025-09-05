@@ -1,0 +1,8 @@
+---
+# handlers file for wanderer
+- name: Restart Wanderer
+  ansible.builtin.systemd:
+    name: wanderer
+    state: restarted
+    enabled: true
+    daemon_reload: true

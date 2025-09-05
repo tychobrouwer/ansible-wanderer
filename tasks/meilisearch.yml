@@ -1,0 +1,13 @@
+---
+- name: Add Meilisearch repository
+  ansible.builtin.apt_repository:
+    repo: 'deb [trusted=yes] https://apt.fury.io/meilisearch/ /'
+    state: present
+    filename: meilisearch
+    update_cache: yes
+
+- name: Install Meilisearch
+  ansible.builtin.apt:
+    name: meilisearch
+    state: present
+

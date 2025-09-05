@@ -1,0 +1,14 @@
+[Unit]
+Description=Wanderer Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/launch-wanderer.sh
+Restart=always
+User={{ wanderer_user }}
+Group={{ wanderer_group }}
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
