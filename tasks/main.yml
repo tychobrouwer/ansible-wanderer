@@ -39,6 +39,7 @@
     single_branch: true
     depth: 1
     version: "{{ tag_name }}"
+    force: true
   register: git_clone
   notify: Restart Wanderer
 
